@@ -10,17 +10,21 @@ namespace ask {
 
 		return number;
 	}
+
+	long factorial(int number) {
+		if (number < 0)
+			return 0;
+		if (number == 0)
+			return 1;
+		else
+			return number * factorial(number - 1);
+	}
 }
 	int main() {
 
-		int myNumber = ask::askFunc();
-		long result{ 1 };
-		for (int i = 1; i <= myNumber; i++) {
-			
-			result *= i;
-		}
-
-		std::cout << "result of a factorial: " << result << std::endl;
+		int myNumber = { ask::askFunc() };
+		int& ref = { myNumber };
+		std::cout << ask::factorial(ref);
 
 		return EXIT_SUCCESS;
 	}
