@@ -21,6 +21,22 @@ namespace functions {
 		void findLessFunc(int* x, int& q, int& size);
 		auto mapFunc(T* a, T* b, std::function<T(const T&)>f);
 		auto reduceFunc(T* a, T* b, std::function<T(T& accum, const T& v)>f, T accum0);
+
+		struct IntStruct {
+			int a;
+			int b;
+		} intStructArray[3] = { {5,6}, {3,4}, {1,2} };
+
+		struct DoubleStruct {
+			double c;
+			double d;
+		} doubleStructArray[3] = { {1.1, 2.2},{5.5, 6.6}, {3.3, 4.4}  };
+
+		struct StringStruct {
+			const char* e;
+			const char* f;
+		} stringStructArray[3] = { {"abc", "def"}, {"mno", "pqr"}, {"ghi", "jkl"} };
+
 	};
 
 	template <typename T, typename U>
@@ -128,11 +144,8 @@ namespace functions {
 	template<typename T, typename U>
 	auto FuncClass<T, U>::reduceFunc(T* a, T* b, std::function<T(T& accum, const T& v)>f, T accum0) {
 
-		auto res = std::transform_reduce(a, b, f);
-		for (auto i = a; i < b; i++) {
-			std::cout << *i << " ";
-		}
-		std::cout << std::endl;
+		auto res = std::accumulate(a, b, accum0, f);
+		std::cout << "sum of an array members: " << res << std::endl;
 		return res;
 	}
 }
@@ -179,6 +192,8 @@ int main() {
 
 	myFuncClass.mapFunc(mapArray, std::end(mapArray), [](auto a) { return a * a; });
 	myFuncClass.reduceFunc(reduceArray, std::end(reduceArray), [](auto acc, auto a) {return acc + a; }, 0);
+
 	
+
 	return EXIT_SUCCESS;
 }
