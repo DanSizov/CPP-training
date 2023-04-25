@@ -1,152 +1,54 @@
 #include <iostream>
-#include <variant>
-#include <algorithm>
-#include <functional>
-#include <numeric>
+#include "Class.h"
+#include "Class.cpp"
 
-namespace functions {
+struct IntStructNew {
+	int a;
+	int b;
+};
 
-	template <typename T, typename U>
-	class FuncClass {
+IntStructNew intStructNewArray[5];
 
-	public:
-		auto maxfunc(T& x, U& y);
-		auto minfunc(T& x, U& y);
-		void swapfunc(T& x, T& y);
-		void oddFunc(int* x, int& size);
-		void evenFunc(int* x, int& size);
-		void oddOneFunc(int* x, int& size);
-		void evenOneFunc(int* x, int& size);
-		void calcFunc(int* x, int& size);
-		void findLessFunc(int* x, int& q, int& size);
-		auto mapFunc(T* a, T* b, std::function<T(const T&)>f);
-		auto reduceFunc(T* a, T* b, std::function<T(T& accum, const T& v)>f, T accum0);
+struct DoubleStructNew {
+	double c;
+	double d;
+};
 
-		struct IntStruct {
-			int a;
-			int b;
-		} intStructArray[3] = { {5,6}, {3,4}, {1,2} };
+DoubleStructNew doubleStructNewArray[5];
 
-		struct DoubleStruct {
-			double c;
-			double d;
-		} doubleStructArray[3] = { {1.1, 2.2},{5.5, 6.6}, {3.3, 4.4}  };
+struct StringStructNew {
+	const char* e;
+};
 
-		struct StringStruct {
-			const char* e;
-			const char* f;
-		} stringStructArray[3] = { {"abc", "def"}, {"mno", "pqr"}, {"ghi", "jkl"} };
+StringStructNew stringStructNewArray[5];
 
-	};
+template <typename T>
+void sortIntStructFuncNew(T* a, T* b) {
 
-	template <typename T, typename U>
-	auto FuncClass<T, U>::maxfunc(T& x, U& y) {
-
-		return (x > y) ? x : y;
+	auto pred = [](const T& a, const T& b) { return a.a < b.a; };
+	std::sort(a, b, pred);
+	for (auto i = a; i < b; i++) {
+		std::cout << " a: " << i->a << ", b: " << i->b << std::endl;
 	}
+}
 
-	template <typename T, typename U>
-	auto FuncClass<T, U>::minfunc(T& x, U& y) {
+template <typename T>
+void sortDoubleStructFuncNew(T* a, T* b) {
 
-		return (x < y) ? x : y;
+	auto pred = [](const T& a, const T& b) { return a.c < b.c; };
+	std::sort(a, b, pred);
+	for (auto i = a; i < b; i++) {
+		std::cout << " c: " << i->c << ", d: " << i->d << std::endl;
 	}
+}
 
-	template <typename T, typename U>
-	void FuncClass<T, U>::swapfunc(T& x, T& y) {
+template <typename T>
+void sortStringStructFuncNew(T* a, T* b) {
 
-		x += y;
-		y = x - y;
-		x -= y;
-		
-	}
-
-	template <typename T, typename U>
-	void FuncClass<T, U>::oddFunc(int* x, int& size) {
-
-		auto is_odd = [](int number) { return (number % 2); };
-		if (std::all_of(x, x + size, is_odd)) {
-			std::cout << "all elements are odd" << std::endl;
-		}
-		else {
-			std::cout << "not all elements are odd" << std::endl;
-		}
-	}
-
-	template <typename T, typename U>
-	void FuncClass<T, U>::evenFunc(int* x, int& size) {
-
-		auto is_even = [](int number) { return !(number % 2); };
-		if (std::all_of(x, x + size, is_even)) {
-			std::cout << "all elements are even" << std::endl;
-		}
-		else {
-			std::cout << "not all elements are even" << std::endl;
-		}
-	}
-
-	template <typename T, typename U>
-	void FuncClass<T, U>::oddOneFunc(int* x, int& size) {
-
-		auto is_one_odd = [](int number) { return (number % 2); };
-		if (std::any_of(x, x + size, is_one_odd)) {
-			std::cout << "at least 1 element is odd" << std::endl;
-		}
-		else {
-			std::cout << "no odd elements" << std::endl;
-		}
-	}
-
-	template<typename T, typename U>
-	void FuncClass<T, U>::evenOneFunc(int* x, int& size) {
-
-		auto is_one_even = [](int number) { return !(number % 2); };
-		if (std::any_of(x, x + size, is_one_even)) {
-			std::cout << "at least 1 element is even" << std::endl;
-		}
-		else {
-			std::cout << "no even elements" << std::endl;
-		}
-	}
-
-	template<typename T, typename U>
-	void FuncClass<T, U>::calcFunc(int* x, int& size) {
-
-		auto is_odd = [](int number) { return (number % 2); };
-		auto is_even = [](int number) { return !(number % 2); };
-		std::cout << "the amount of odd numbers: " << std::count_if(x, x + size, is_odd) << std::endl;
-		std::cout << "the amount of even numbers: " << std::count_if(x, x + size, is_even) << std::endl;
-	}
-
-	template<typename T, typename U>
-	void FuncClass<T, U>::findLessFunc(int* x,int& q, int& size) {
-
-		auto isLess = [q](int number) { return (number < q); };
-		auto res = std::find_if(x, x + size, isLess);
-		if (res != x + size) {
-			std::cout << "found! index: " << res - x << " , " << "value : " << *res << std::endl;
-		}
-		else {
-			std::cout << "not found 404" << std::endl;
-		}
-	}
-
-	template<typename T, typename U>
-	auto FuncClass<T, U>::mapFunc(T* a, T* b, std::function<T(const T&)>f) {
-
-		auto res = std::transform(a ,b, a, f);
-		for (auto i = a; i < b; i++) {
-			std::cout << *i << " ";
-		}
-		std::cout << std::endl;
-		return res;
-	}
-
-	template<typename T, typename U>
-	auto FuncClass<T, U>::reduceFunc(T* a, T* b, std::function<T(T& accum, const T& v)>f, T accum0) {
-
-		auto res = std::accumulate(a, b, accum0, f);
-		std::cout << "sum of an array members: " << res << std::endl;
-		return res;
+	auto pred = [](const T& a, const T& b) { return a.e < b.e; };
+	std::sort(a, b, pred);
+	for (auto i = a; i < b; i++) {
+		std::cout << " e: " << i->e << std::endl;
 	}
 }
 
@@ -193,7 +95,50 @@ int main() {
 	myFuncClass.mapFunc(mapArray, std::end(mapArray), [](auto a) { return a * a; });
 	myFuncClass.reduceFunc(reduceArray, std::end(reduceArray), [](auto acc, auto a) {return acc + a; }, 0);
 
+	functions::FuncClass<functions::FuncClass<int, int>::IntStruct, functions::FuncClass<double, double>::DoubleStruct> myStructClass;
 	
+	intStructNewArray[0].a = { 10 };
+	intStructNewArray[0].b = { 10 };
+	intStructNewArray[1].a = { 0 };
+	intStructNewArray[1].b = { 3 };
+	intStructNewArray[2].a = { 9 };
+	intStructNewArray[2].b = { 2 };
+	intStructNewArray[3].a = { 2 };
+	intStructNewArray[3].b = { 2 };
+	intStructNewArray[4].a = { 99 };
+	intStructNewArray[4].b = { 99 };
+
+	int sizeintStructNewArray{ sizeof(intStructNewArray) / sizeof(intStructNewArray[0]) };
+	sortIntStructFuncNew(intStructNewArray, intStructNewArray + sizeintStructNewArray);
+
+	doubleStructNewArray[0].c = { 4.4 };
+	doubleStructNewArray[0].d = { 4.3 };
+	doubleStructNewArray[1].c = { 3.4 };
+	doubleStructNewArray[1].d = { 5.4 };
+	doubleStructNewArray[2].c = { 1.4 };
+	doubleStructNewArray[2].d = { 3.9 };
+	doubleStructNewArray[3].c = { 2.4 };
+	doubleStructNewArray[3].d = { 5.5 };
+	doubleStructNewArray[4].c = { 1.7 };
+	doubleStructNewArray[4].d = { 0.9 };
+
+	int sizedoubleStructNewArray{ sizeof(doubleStructNewArray) / sizeof(doubleStructNewArray[0]) };
+	sortDoubleStructFuncNew(doubleStructNewArray, doubleStructNewArray + sizedoubleStructNewArray);
+
+	stringStructNewArray[0].e = { "r" };
+	stringStructNewArray[1].e = { "a" };
+	stringStructNewArray[2].e = { "b" };
+	stringStructNewArray[3].e = { "x" };
+	stringStructNewArray[4].e = { "v" };
+
+	int sizestringStructNewArray{ sizeof(stringStructNewArray) / sizeof(stringStructNewArray[0]) };
+
+	std::cout << "Before sorting:" << std::endl;
+	for (auto i = 0; i < sizestringStructNewArray; i++) {
+		std::cout << " e: " << stringStructNewArray[i].e << std::endl;
+	}
+	std::cout << " after sorting: " << std::endl;
+	sortStringStructFuncNew(stringStructNewArray, stringStructNewArray + sizestringStructNewArray);
 
 	return EXIT_SUCCESS;
 }
