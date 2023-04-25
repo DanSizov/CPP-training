@@ -21,5 +21,11 @@
     <ClCompile Include="backup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Class.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Class.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
