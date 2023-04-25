@@ -22,6 +22,14 @@ struct StringStructNew {
 
 StringStructNew stringStructNewArray[5];
 
+struct StructAll {
+	int i;
+	double d;
+	const char* e;
+};
+
+StructAll structAllArray[3];
+
 template <typename T>
 void sortIntStructFuncNew(T* a, T* b) {
 
@@ -49,6 +57,16 @@ void sortStringStructFuncNew(T* a, T* b) {
 	std::sort(a, b, pred);
 	for (auto i = a; i < b; i++) {
 		std::cout << " e: " << i->e << std::endl;
+	}
+}
+
+template<typename T>
+void sortFuncNew(T* a, T* b) {
+
+	auto pred = [](const T& a, const T& b) { return a.e < b.e; };
+	std::sort(a, b, pred);
+	for (auto i = a; i < b; i++) {
+		std::cout << " " << i->e << std::endl;
 	}
 }
 
@@ -139,6 +157,27 @@ int main() {
 	}
 	std::cout << " after sorting: " << std::endl;
 	sortStringStructFuncNew(stringStructNewArray, stringStructNewArray + sizestringStructNewArray);
+
+	structAllArray[0].i = { 5 };
+	structAllArray[0].d = { 1.1 };
+	structAllArray[0].e = { "ab" };
+	structAllArray[1].i = { 3 };
+	structAllArray[1].d = { 2.2 };
+	structAllArray[1].e = { "df" };
+	structAllArray[2].i = { 1 };
+	structAllArray[2].d = { 3.5 };
+	structAllArray[2].e = { "cx" };
+
+	int sizestructAllArray{ sizeof(structAllArray) / sizeof(structAllArray[0]) };
+
+	std::cout << "Before sorting:" << std::endl;
+	for (auto i = 0; i < sizestructAllArray; i++) {
+		std::cout << " i: " << structAllArray[i].i << std::endl;
+		std::cout << " d: " << structAllArray[i].d << std::endl;
+		std::cout << " e: " << structAllArray[i].e << std::endl;
+	}
+
+	sortFuncNew(structAllArray, structAllArray + sizestructAllArray);
 
 	return EXIT_SUCCESS;
 }
