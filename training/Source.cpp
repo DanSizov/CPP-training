@@ -76,7 +76,7 @@ int main() {
 	double q{ 1.1 };
 	int y{ 1 };
 	int w{ 5 };
-	functions::FuncClass<int, double> myFuncClass;
+	functions::FuncClass<int, double> myFuncClass{};
 
 	std::cout << myFuncClass.maxfunc(x, q) << std::endl;
 	std::cout << myFuncClass.minfunc(x, q) << std::endl;
