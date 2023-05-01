@@ -32,10 +32,10 @@ private:
 		}
 	};
 
-	FieldClass(const FieldClass& obj) = delete;
+	FieldClass(const FieldClass& obj) = delete; // copy constructor deleted
 
 public:
-	FieldClass& operator = (const FieldClass& obj) = delete;
+	FieldClass& operator = (const FieldClass& obj) = delete; // "=" operator deleted
 
 	static FieldClass* getInstance(int rows, int cols) {
 
@@ -80,14 +80,20 @@ public:
 
 	void createPlayers(int number) {
 		players_.resize(number);
+		for (int i = 0; i < players_.size(); i++) {
+			players_[i].setPlayerId(std::to_string(i));
+			players_[i].setFractionId(std::to_string(i));
+		}
 	}
 
 	void createFructions(int number) {
 		fractions_.resize(number);
+		for (int i = 0; i < fractions_.size(); i++) {
+			fractions_[i].setFractionId(i);
+		}
 	}
 
-	FieldClass& generateField(int cellsNumber, int playersNumber, int fractionsNumber, int rows, int cols) {
-			FieldClass& newField = *FieldClass::getInstance(rows, cols);
+	FieldClass& generateField(FieldClass& newField, int playersNumber, int fractionsNumber, int rows, int cols) {
 			newField.cells_.resize(rows);
 			for (int i = 0; i < rows; i++) {
 				newField.cells_[i].resize(cols);
@@ -103,7 +109,7 @@ public:
 			newField.createPlayers(playersNumber);
 			newField.createFructions(fractionsNumber);
 			return newField;
-	}
+	} // random field generation method
 
 	auto findPlayersCell(std::string nick) {
 		std::vector<std::pair<int, int>>result;
@@ -114,7 +120,34 @@ public:
 				}
 			}
 		}
+		for (int i = 0; i < result.size(); i++) {
+			std::cout << "( " << result[i].first << " , " << result[i].second << " ) " << std::endl;
+		}
 		return result;
+	} // searching player's cells method
+
+	auto findFractionPlayers(int fractionId) {
+		std::vector<std::string>result;
+		for (int i = 0; i < players_.size(); i++) {
+			if (players_[i].getFractionId() == std::to_string(fractionId)) {
+				result.push_back(players_[i].getPlayerId());
+			}
+		}
+		std::cout << "fraction id " << fractionId << " players: " << std::endl;
+		for (int i = 0; i < result.size(); i++) {
+			std::cout << result[i] << std::endl;
+		}
+		return result;
+	} // searching player belonging to the specific fraction
+
+	void changeBelonging(FieldClass& field, std::string belonging, int number) {
+		if (number > field.cells_.size() || number > field.cells_[0].size())
+			return;
+		for (int i = 0; i < number; i++) {
+			for (int j = 0; j < number; j++) {
+				field.cells_[i][j].setBelonging(belonging);
+			}
+		}
 	}
 
 	~FieldClass() {}
