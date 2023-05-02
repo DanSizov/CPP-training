@@ -32,10 +32,9 @@ private:
 		}
 	};
 
-	FieldClass(const FieldClass& obj) = delete; // copy constructor deleted
-
 public:
 	FieldClass& operator = (const FieldClass& obj) = delete; // "=" operator deleted
+	FieldClass& operator = (const FieldClass&& obj) = delete; // move constructor deleted
 
 	static FieldClass* getInstance(int rows, int cols) {
 
